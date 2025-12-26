@@ -1,0 +1,28 @@
+/* Style for the table header */
+table thead {
+    background-color: #007bff; /* Blue background */
+    color: white; /* White text */
+    font-weight: bold;
+    text-align: center;
+  }
+  
+  /* Alternate row colors */
+  table tbody tr:nth-child(odd) {
+    background-color: #f7f7f7; /* Light gray for odd rows */
+  }
+  
+  table tbody tr:nth-child(even) {
+    background-color: #ffffff; /* White for even rows */
+  }
+  
+  /* Add padding and alignment for table cells */
+  table td, table th {
+    padding: 10px;
+    text-align: left;
+  }
+  
+  /* Optional: Add hover effect for rows */
+  table tbody tr:hover {
+    background-color: #2e2d2d; /* Slightly darker gray on hover */
+    cursor: pointer;
+  }

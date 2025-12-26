@@ -1,0 +1,81 @@
+.handPointer {
+    cursor: pointer;
+}
+
+:host {
+    ::ng-deep {
+        .ngx-table__header {
+            background-color: #f8f9fa;
+        }
+        
+        .btn-primary {
+            color: #fff;
+            background-color: #4154f1;
+            border-color: #4154f1;
+            
+            &:hover {
+                background-color: #3544c9;
+                border-color: #3544c9;
+            }
+        }
+    }
+}
+
+.side-drawer {
+    position: fixed;
+    top: 0;
+    right: -500px;
+    width: 500px;
+    height: 100vh;
+    background: white;
+    z-index: 1050;
+    transition: right 0.3s ease-in-out;
+    box-shadow: -2px 0 8px rgba(0,0,0,0.15);
+
+    &.show {
+        right: 0;
+    }
+}
+
+.drawer-content {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.drawer-header {
+    padding: 1rem;
+    border-bottom: 1px solid #dee2e6;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.drawer-body {
+    padding: 1rem;
+    flex: 1;
+    overflow-y: auto;
+}
+
+.drawer-footer {
+    padding: 1rem;
+    border-top: 1px solid #dee2e6;
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.5rem;
+}
+
+.drawer-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0,0,0,0.5);
+    z-index: 1040;
+    display: none;
+
+    &.show {
+        display: block;
+    }
+}

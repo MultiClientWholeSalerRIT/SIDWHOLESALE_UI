@@ -1,0 +1,45 @@
+.ag-grid-wrapper {
+  width: 100%;
+  height: calc(100vh - 200px);
+  min-height: 400px;
+  margin: 15px 0;
+}
+
+.ag-grid-responsive {
+  width: 100%;
+  height: 100%;
+}
+
+/* Media queries for different screen sizes */
+@media screen and (max-width: 768px) {
+  .ag-grid-wrapper {
+    height: calc(100vh - 150px);
+    min-height: 300px;
+  }
+  
+  .mb-3 input {
+    width: 100% !important;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .ag-header-cell-label {
+    white-space: normal;
+    overflow-wrap: break-word;
+  }
+}
+
+:host ::ng-deep {
+  .updated-date-row {
+    background-color: #fff3cd !important; // Light yellow warning color
+  }
+
+  // Override for striped rows if needed
+  .ag-row-even.updated-date-row {
+    background-color: #fff3cd !important;
+  }
+
+  .ag-row-odd.updated-date-row {
+    background-color: #fff3cd !important;
+  }
+}

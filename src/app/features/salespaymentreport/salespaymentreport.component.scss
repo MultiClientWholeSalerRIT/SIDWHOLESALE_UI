@@ -1,0 +1,70 @@
+.report-form {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: nowrap;
+    width: 100%;
+  
+    .form-group {
+      flex: 0 0 auto;
+      min-width: 200px;
+      margin-right: 10px;
+      margin-bottom: 0;
+      position: relative;
+      white-space: nowrap;
+    }
+  
+    .form-control {
+      min-width: 200px;
+  
+      &.is-invalid {
+        border-color: initial;
+        padding-right: initial;
+        background-image: none;
+      }
+    }
+  
+    .invalid-feedback {
+      display: block;
+      width: 100%;
+      margin-top: 0.25rem;
+      font-size: 0.875em;
+      color: #dc3545;
+      position: absolute;
+    }
+  
+    button[type="submit"] {
+      margin-top: 0;
+      align-self: flex-start;
+      
+      &:disabled {
+        opacity: 0.7;
+        cursor: not-allowed;
+      }
+    }
+  
+    .btn {
+      height: 38px; // Match the height of other form controls
+    }
+  }
+  
+  .table {
+    .table-dark {
+      background-color: #212529;
+      color: #fff;
+      
+      th {
+        border-color: #373b3e;
+        font-weight: 500;
+        padding: 12px;
+        vertical-align: middle;
+        text-align: center;
+      }
+    }
+  }
+  .card {
+    transform-style: preserve-3d;
+    backface-visibility: hidden;
+    perspective: 1000px;
+    transition: none;
+  }

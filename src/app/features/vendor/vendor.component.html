@@ -1,0 +1,64 @@
+<div class="pagetitle">
+  <h1>Reports</h1>
+  <nav>
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item">
+        <a (click)="goto('/dashboard')" class="handPointer">Home</a>
+      </li>
+      <li class="breadcrumb-item active">Vendor Report</li>
+    </ol>
+  </nav>
+</div>
+<!-- End Page Title -->
+
+<div class="columns">
+  <div class="column col-12">
+    <div>
+      <div>
+        <div class="d-flex justify-content-between align-items-center mb-3">
+          <!-- Left: Title -->
+          <h5 class="mb-0">Vendor Report</h5>
+
+          <!-- Right: Search + Excel Icon -->
+          <div class="d-flex align-items-center gap-2">
+            <input
+              type="text"
+              class="form-control"
+              placeholder="Search..."
+              (keyup)="onFilterTextBoxChanged($event)"
+              style="width: 300px;"
+            >
+            <i 
+              class="bi bi-file-earmark-excel fs-4 text-success"
+              style="cursor: pointer;"
+              (click)="exportToExcel()"
+              title="Export to Excel">
+            </i>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="ag-grid-wrapper">
+          <ag-grid-angular
+          style="width: 100%; height: calc(100vh - 200px);padding-bottom: 40px;"
+              class="ag-theme-alpine"
+              [rowData]="rowData"
+              [columnDefs]="colDefs"
+              [domLayout]="'normal'"
+              [suppressHorizontalScroll]="false"
+              [defaultColDef]="{
+                flex: 1,
+                minWidth: 100,
+                resizable: true
+              }"
+              [pagination]="true"
+              [paginationPageSize]="20"
+              [quickFilterText]="searchText"
+              (gridReady)="onGridReady($event)"
+            >
+          </ag-grid-angular>
+        </div>
+      </div>
+    </div> 
+  </div>
+</div>

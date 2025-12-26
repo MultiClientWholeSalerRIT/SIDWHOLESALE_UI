@@ -1,0 +1,148 @@
+<div>
+    <div class="d-flex justify-content-between align-items-center">
+      <h5 class="mb-0">User Management</h5>
+    </div>
+    <form [formGroup]="userForm" (ngSubmit)="saveUser()" class="p-3 mb-4">
+      <div class="row g-2">
+        <div class="col-md-2">
+          <input type="text" class="form-control" formControlName="userName" placeholder="User Name" required>
+        </div>
+        <div class="col-md-2">
+          <input type="tel" class="form-control" formControlName="phoneNumber" placeholder="Phone Number" required>
+          <div class="invalid-feedback" *ngIf="userForm.get('phoneNumber')?.touched && userForm.get('phoneNumber')?.invalid">
+            <div *ngIf="userForm.get('phoneNumber')?.errors?.['required']">Phone Number is required</div>
+            <div *ngIf="userForm.get('phoneNumber')?.errors?.['pattern']">Enter a valid 10-digit phone number</div>
+          </div>
+        </div>
+        <div class="col-md-2">
+          <input type="email" class="form-control" formControlName="email" placeholder="Email">
+          <div class="invalid-feedback" *ngIf="userForm.get('email')?.touched && userForm.get('email')?.invalid">
+            <div *ngIf="userForm.get('email')?.errors?.['email']">Enter a valid email address</div>
+          </div>
+        </div>
+        <div class="col-md-2">
+          <input type="text" class="form-control" formControlName="address" placeholder="Address">
+          <div class="invalid-feedback" *ngIf="userForm.get('address')?.touched && userForm.get('address')?.invalid">
+            Address is required
+          </div>
+        </div>
+    
+        <div class="col-md-2">
+          <select class="form-control" formControlName="usertype" [class.is-invalid]="userForm.get('usertype')?.touched && userForm.get('usertype')?.invalid">
+            <option value="UR" [defaultSelected]="true">User</option>
+          </select>
+          <div class="invalid-feedback" *ngIf="userForm.get('usertype')?.touched && userForm.get('usertype')?.invalid">
+            User type is required
+          </div>
+        </div>
+    
+        <div class="col-md-2">
+          <input type="text" class="form-control" formControlName="password" placeholder="New Password">
+          <div class="invalid-feedback" *ngIf="userForm.get('password')?.touched && userForm.get('password')?.invalid">
+            Password is required
+          </div>
+        </div>
+        <div class="col-md-2">
+          
+          <input type="text" class="form-control" formControlName="bankName" placeholder="Bank Name">
+        </div>
+        <div class="col-md-2">
+          
+          <input type="text" class="form-control" formControlName="ifsccode" placeholder="IFSC Code">
+        </div>
+        <div class="col-md-2">
+          
+          <input type="text" class="form-control" formControlName="accountNumber" placeholder="Account Number">
+        </div>
+        <div class="col-md-2">
+             <input type="text" class="form-control" formControlName="branch" placeholder="Branch">
+            </div>
+            <div class="col-md-2">
+              <select class="form-control" formControlName="roleId" [class.is-invalid]="(userForm.get('roleId')?.touched && userForm.get('roleId')?.invalid) || userForm.errors?.['invalidRole']" >
+                <ng-container [ngSwitch]="userForm.get('usertype')?.value">
+                  <ng-container *ngSwitchCase="'UR'">
+                    <option [value]="1"  [defaultSelected]="true">Admin</option>
+                    <option [value]="2">Manager</option>
+                  </ng-container>
+                </ng-container>
+              </select>
+              <div class="invalid-feedback" *ngIf="userForm.get('roleId')?.touched && userForm.get('roleId')?.invalid">
+                Role is required
+              </div>
+              <div class="invalid-feedback" *ngIf="userForm.errors?.['invalidRole']">
+                {{userForm.errors?.['invalidRole']}}
+              </div>
+            </div>
+            <div class="col-md-1">
+              <div class="form-check mt-4">
+                <input type="checkbox" class="form-check-input" formControlName="isActive">
+                <label class="form-check-label">Active</label>
+              </div>
+            </div>
+        <div class="col-md-1 align-self-end">
+          <button type="button" class="btn btn-primary" (click)="saveUser()" [disabled]="!userForm.valid">
+            {{ selectedUser ? 'Update' : 'Save' }}
+          </button>
+        </div>
+      </div>
+    </form>
+    
+    <div >
+      <div class="row mb-3">
+        <div class="col-md-3">
+          <label class="form-label">Filter by User Type</label>
+          <select class="form-select" [(ngModel)]="selectedUserTypeFilter" (change)="filterUsers()">
+            <option value="UR">Users</option>
+          </select>
+        </div>
+      </div>
+      <div class="d-flex justify-content-between align-items-center mb-3">
+        <!-- Left: Title -->
+        <h5 class="mb-0">User Management</h5>
+      
+        <!-- Right: Search + Excel Icon -->
+        <div class="d-flex align-items-center gap-2">
+          <input
+            type="text"
+            class="form-control"
+            placeholder="Search..."
+            (keyup)="onFilterTextBoxChanged($event)"
+            style="width: 300px;"
+          >
+          <i 
+            class="bi bi-file-earmark-excel fs-4 text-success"
+            style="cursor: pointer;"
+            (click)="exportToExcel()"
+            title="Export to Excel">
+          </i>
+        </div>
+      </div>
+      <div>          
+        <div class="ag-grid-wrapper">
+        <ag-grid-angular
+        style="width: 100%; height: calc(100vh - 200px)"
+        class="ag-theme-alpine"
+            [rowData]="rowData"
+            [columnDefs]="colDefs"
+            [domLayout]="'normal'"
+            [suppressHorizontalScroll]="false"
+            [defaultColDef]="{
+              flex: 1,
+              minWidth: 100,
+              resizable: true
+            }"
+            [pagination]="true"
+            [paginationPageSize]="20"
+            [quickFilterText]="searchText"
+            (gridReady)="onGridReady($event)"
+          >
+          </ag-grid-angular>
+          </div>
+      </div>
+    </div>
+  </div>
+  
+  
+  <app-toasts aria-live="polite" aria-atomic="true"></app-toasts>
+  
+  

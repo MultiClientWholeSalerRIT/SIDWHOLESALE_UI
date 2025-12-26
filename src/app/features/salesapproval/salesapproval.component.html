@@ -1,0 +1,82 @@
+<div class="pagetitle">
+  <h1>Manage Sales</h1>
+  <nav>
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item">
+        <a (click)="goto('/dashboard')" class="handPointer">Home</a>
+      </li>
+      <li class="breadcrumb-item active">Daily Sales Approvals</li>
+    </ol>
+  </nav>
+</div>
+<!-- End Page Title -->
+
+<section class="section">
+    <div class="row">
+        <form class="p-3 mb-4">
+            <div class="mb-3">
+              <div class=""row>
+                <div class="column col-lg-12">
+                    <!-- Add search field -->
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                      <!-- Left: Title -->
+                      <div class="mb-3 d-flex align-items-center gap-2"></div>
+
+                      <!-- Right: Search + Excel Icon -->
+                      <div class="d-flex align-items-center gap-2">
+                        <div class="form-check me-4">
+                          
+                        </div>
+                        <input
+                          type="text"
+                          class="form-control"
+                          placeholder="Search..."
+                          (keyup)="onFilterTextBoxChanged($event)"
+                          style="width: 200px"
+                        />
+                        <button type="button" class="btn btn-primary" (click)="onSubmit()">
+                            Approved
+                        </button> 
+                      </div>
+                    </div>
+                </div>
+              </div>
+                <!-- <button type="button" class="btn btn-primary" (click)="onSubmit()">
+                    Approved
+                </button>
+                <input
+                  type="text"
+                  class="form-control"
+                  placeholder="Search..."
+                  (keyup)="onFilterTextBoxChanged($event)"
+                  style="width: 300px"
+                /> -->
+            </div>
+            <div>
+                <p-confirmDialog 
+                    [style]="{width: '450px'}" 
+                    [baseZIndex]="10000" 
+                    acceptButtonStyleClass="p-button-danger" 
+                    rejectButtonStyleClass="p-button-secondary">
+                </p-confirmDialog>
+
+                <ag-grid-angular
+                    style="width: 100%; height: calc(100vh - 200px)"
+                    class="ag-theme-alpine"
+                    [rowData]="rowData"
+                    [columnDefs]="colDefs"
+                    [defaultColDef]="defaultColDef"
+                    [domLayout]="'normal'"
+                    [suppressHorizontalScroll]="false"
+                    [gridOptions]="gridOptions"
+                    [pagination]="true"
+                    [paginationPageSize]="100"
+                    [quickFilterText]="searchText"
+                    [suppressPaginationPanel]="false"
+                    [stopEditingWhenCellsLoseFocus]="true">
+                </ag-grid-angular>
+            </div>
+        </form>
+    </div>
+</section>
+

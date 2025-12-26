@@ -1,0 +1,170 @@
+<div class="pagetitle">
+  <h1>Customer/Vendor Management</h1>
+  <nav>
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item">
+        <a (click)="goto('/dashboard')" class="handPointer">Home</a>
+      </li>
+      <li class="breadcrumb-item active">Customer/Vendor Management</li>
+    </ol>
+  </nav>
+</div>
+
+<section class="section">
+  <div class="row">
+    <form [formGroup]="userForm" (ngSubmit)="saveUser()" class="p-3 mb-4">
+      <div class="row g-3">
+        <div class="col-md-2">
+          <label for="userName" class="form-label form-label-custom">User Name</label>
+          <input type="text" id="userName" class="form-control" formControlName="userName" placeholder="User Name" required>
+        </div>
+        <div class="col-md-2">
+          <label for="phoneNumber" class="form-label form-label-custom">Phone Number</label>
+          <input type="tel" id="phoneNumber" class="form-control" formControlName="phoneNumber" placeholder="Phone Number" required>
+          <div class="invalid-feedback" *ngIf="userForm.get('phoneNumber')?.touched && userForm.get('phoneNumber')?.invalid">
+            <div *ngIf="userForm.get('phoneNumber')?.errors?.['required']">Phone Number is required</div>
+            <div *ngIf="userForm.get('phoneNumber')?.errors?.['pattern']">Enter a valid 10-digit phone number</div>
+          </div>
+        </div>
+        <div class="col-md-2">
+          <label for="email" class="form-label form-label-custom">Email</label>
+          <input type="email" id="email" class="form-control" formControlName="email" placeholder="Email">
+          <div class="invalid-feedback" *ngIf="userForm.get('email')?.touched && userForm.get('email')?.invalid">
+            <div *ngIf="userForm.get('email')?.errors?.['email']">Enter a valid email address</div>
+          </div>
+        </div>
+        <div class="col-md-2">
+          <label for="address" class="form-label form-label-custom">Address</label>
+          <input type="text" id="address" class="form-control" formControlName="address" placeholder="Address">
+        </div>
+        <div class="col-md-2">
+          <label for="usertype" class="form-label form-label-custom">User Type</label>
+          <select id="usertype" class="form-control" formControlName="usertype" [class.is-invalid]="userForm.get('usertype')?.touched && userForm.get('usertype')?.invalid">
+            <option value="CU">Customer</option>
+            <option value="VD">Vendor</option>
+          </select>
+          <div class="invalid-feedback" *ngIf="userForm.get('usertype')?.touched && userForm.get('usertype')?.invalid">
+            User type is required
+          </div>
+        </div>
+        <div class="col-md-2">
+          <label for="initialDueBalance" class="form-label form-label-custom">Initial Due Balance</label>
+          <input type="number" id="initialDueBalance" class="form-control" formControlName="initialDueBalance" placeholder="Initial Due Balance">
+        </div>
+        <div class="col-md-2">
+          <label for="bankName" class="form-label form-label-custom">Bank Name</label>
+          <input type="text" id="bankName" class="form-control" formControlName="bankName" placeholder="Bank Name">
+        </div>
+        <div class="col-md-2">
+          <label for="ifsccode" class="form-label form-label-custom">IFSC Code</label>
+          <input type="text" id="ifsccode" class="form-control" formControlName="ifsccode" placeholder="IFSC Code">
+        </div>
+        <div class="col-md-2">
+          <label for="accountNumber" class="form-label form-label-custom">Account Number</label>
+          <input type="text" id="accountNumber" class="form-control" formControlName="accountNumber" placeholder="Account Number">
+        </div>
+        <div class="col-md-2">
+          <label for="branch" class="form-label form-label-custom">Branch</label>
+          <input type="text" id="branch" class="form-control" formControlName="branch" placeholder="Branch">
+        </div>
+        <div class="col-md-2">
+          <label for="roleId" class="form-label form-label-custom">Role</label>
+          <select id="roleId" class="form-control" formControlName="roleId" [class.is-invalid]="(userForm.get('roleId')?.touched && userForm.get('roleId')?.invalid) || userForm.errors?.['invalidRole']">
+            <ng-container [ngSwitch]="userForm.get('usertype')?.value">
+              <ng-container *ngSwitchCase="'UR'">
+                <option [value]="1">Admin</option>
+                <option [value]="2">Manager</option>
+              </ng-container>
+              <ng-container *ngSwitchCase="'CU'">
+                <option [value]="3">Customer</option>
+              </ng-container>
+              <ng-container *ngSwitchCase="'VD'">
+                <option [value]="4">Vendor</option>
+              </ng-container>
+            </ng-container>
+          </select>
+          <div class="invalid-feedback" *ngIf="userForm.get('roleId')?.touched && userForm.get('roleId')?.invalid">
+            Role is required
+          </div>
+          <div class="invalid-feedback" *ngIf="userForm.errors?.['invalidRole']">
+            {{userForm.errors?.['invalidRole']}}
+          </div>
+        </div>
+        <div class="col-md-1">
+          <label class="form-label form-label-custom">Status</label>
+          <div class="form-check">
+            <input type="checkbox" id="isActive" class="form-check-input" formControlName="isActive">
+            <label class="form-check-label" for="isActive">Active</label>
+          </div>
+        </div>
+        <div class="col-md-1">
+          <label class="form-label form-label-custom">&nbsp;</label>
+          <button type="button" class="btn btn-primary form-control" (click)="saveUser()" [disabled]="!userForm.valid">
+            {{ selectedUser ? 'Update' : 'Save' }}
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <div class="row">
+    <div class="column col-lg-12">
+      <div class="d-flex justify-content-between align-items-center mb-3">
+        <div class="mb-3 d-flex align-items-center gap-2">
+          <div class="col-md-12">
+            <label class="form-label">Filter by User Type</label>
+            <select class="form-select" [(ngModel)]="selectedUserTypeFilter" (change)="filterUsers()">
+              <option value="CU">Customer</option>
+              <option value="VD">Vendor</option>
+            </select>
+          </div>
+        </div>
+        <div class="d-flex align-items-center gap-2">
+          <input
+            type="text"
+            class="form-control"
+            placeholder="Search..."
+            (keyup)="onFilterTextBoxChanged($event)"
+            style="width: 300px"
+          />
+          <i
+            class="bi bi-file-earmark-excel fs-4 text-success"
+            style="cursor: pointer"
+            (click)="exportToExcel()"
+            title="Export to Excel"
+          ></i>
+        </div>
+      </div>
+    </div>
+    <div class="column col-lg-12">
+      <div class="ag-grid-wrapper" *ngIf="rowData && rowData.length > 0">
+        <ag-grid-angular
+          style="width: 100%; height: calc(100vh - 100px); padding-bottom: 30px;"
+          class="ag-theme-alpine"
+          [rowData]="rowData"
+          [columnDefs]="colDefs"
+          [domLayout]="'normal'"
+          [suppressHorizontalScroll]="false"
+          [defaultColDef]="{
+            flex: 1,
+            minWidth: 100,
+            resizable: true
+          }"
+          [pagination]="true"
+          [paginationPageSize]="100"
+          [suppressPaginationPanel]="false"
+          [quickFilterText]="searchText"
+          (gridReady)="onGridReady($event)"
+          [stopEditingWhenCellsLoseFocus]="true"
+        >
+        </ag-grid-angular>
+      </div>
+      <div *ngIf="!rowData || rowData.length === 0" class="text-center p-4">
+        No users found.
+      </div>
+    </div>
+  </div>
+</section>
+
+<app-toasts aria-live="polite" aria-atomic="true"></app-toasts>
+

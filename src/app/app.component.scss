@@ -1,0 +1,27 @@
+:host {
+  position: relative;
+}
+
+::ng-deep {
+  .ngb-toasts {
+    position: fixed;
+    top: 0;
+    right: 0;
+    margin: 1rem;
+    z-index: 1200;
+  }
+
+  .toast-success {
+    background-color: #51A351 !important;
+    color: white;
+  }
+
+  .toast-warning {
+    background-color: #F89406 !important;
+    color: white;
+  }
+
+  ngb-toast {
+    min-width: 300px;
+  }
+}

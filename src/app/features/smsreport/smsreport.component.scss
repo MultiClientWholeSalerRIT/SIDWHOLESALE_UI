@@ -1,0 +1,88 @@
+.report-form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  padding: 1rem;
+  background-color: #fff;
+  border-radius: 4px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+
+  .form-group {
+    flex: 1;
+    min-width: 200px;
+    margin-bottom: 1rem;
+
+    input, select {
+      width: 100%;
+      padding: 0.5rem;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      
+      &:focus {
+        outline: none;
+        border-color: #4154f1;
+      }
+    }
+
+    button {
+      padding: 0.5rem 1rem;
+      background-color: #4154f1;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+
+      &:hover {
+        background-color: #3445c5;
+      }
+    }
+  }
+}
+
+.card {
+    transform-style: preserve-3d;
+    backface-visibility: hidden;
+    perspective: 1000px;
+    transition: none;
+  }
+
+.handPointer {
+  cursor: pointer;
+}
+
+.table-responsive {
+  overflow-x: auto;
+}
+
+.ag-grid-wrapper {
+  width: 100%;
+  height: calc(100vh - 200px);
+  min-height: 400px;
+  margin: 15px 0;
+}
+
+.ag-grid-responsive {
+  width: 100%;
+  height: 100%;
+}
+
+/* Media queries for different screen sizes */
+@media screen and (max-width: 768px) {
+  .ag-grid-wrapper {
+    height: calc(100vh - 150px);
+    min-height: 300px;
+  }
+  
+  .mb-3 input {
+    width: 100% !important;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .ag-header-cell-label {
+    white-space: normal;
+    overflow-wrap: break-word;
+  }
+}

@@ -1,0 +1,12 @@
+.nav-content {
+  // ...existing code...
+  .active {
+    background-color: #f6f9ff;
+    color: #4154f1 !important;
+    
+    i {
+      color: #4154f1;
+    }
+  }
+  // ...existing code...
+}

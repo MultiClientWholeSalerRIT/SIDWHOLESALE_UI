@@ -1,0 +1,69 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+
+  * {
+    box-sizing: border-box;
+  }
+
+  body, html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    font-family: 'Poppins', sans-serif;
+    background: url('https://images.unsplash.com/photo-1617988210215-b4bb1602f2c1?auto=format&fit=crop&w=1740&q=80') no-repeat center center fixed;
+    background-size: cover;
+  }
+
+  .center-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    padding: 20px;
+    background-color: rgba(255, 255, 255, 0.4); /* subtle overlay for readability */
+  }
+
+  .login-container {
+    background: rgba(255, 255, 255, 0.95);
+    padding: 40px 30px;
+    border-radius: 20px;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.1);
+    max-width: 400px;
+    width: 100%;
+    text-align: center;
+  }
+
+  .login-container h2 {
+    margin-bottom: 24px;
+    color: #444;
+    font-weight: 600;
+  }
+
+  .form-group {
+    margin-bottom: 20px;
+    text-align: left;
+  }
+
+  .form-group input {
+    width: 100%;
+    padding: 12px 16px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    font-size: 15px;
+    background-color: #fff;
+  }
+
+  .login-btn {
+    width: 100%;
+    padding: 12px;
+    background-color: #fcd34d;
+    color: #333;
+    font-weight: 600;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+
+  .login-btn:hover {
+    background-color: #fbbf24;
+  }

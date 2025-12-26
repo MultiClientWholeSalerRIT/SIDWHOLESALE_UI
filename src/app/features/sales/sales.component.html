@@ -1,0 +1,428 @@
+<!-- START OF FILE sales.component.html -->
+
+<p-confirmDialog [style]="{width: '450px'}"></p-confirmDialog>
+
+<div class="pagetitle">
+  <h1>Sales</h1>
+  <!-- Updated Title -->
+  <nav>
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item">
+        <a (click)="goto('/dashboard')" class="handPointer">Home</a>
+      </li>
+      <li class="breadcrumb-item active">Sales</li>
+    </ol>
+  </nav>
+</div>
+<!-- End Page Title -->
+
+<section class="section">
+  <div class="row">
+    <!-- Add Sales/Payment Form -->
+    <form [formGroup]="salesForm" (ngSubmit)="onSubmit()" class="p-3 mb-4">
+      <div class="row g-3">
+        <!-- Common Fields -->
+        <div class="col-md-2">
+          <!-- Adjusted width -->
+          <p-floatLabel variant="on">
+            <p-select
+              [options]="transactions"
+              formControlName="transactionTypeId"
+              optionLabel="name"
+              inputId="float-label"
+              [style]="{ width: '100%' }"
+              [checkmark]="true"
+              placeholder="Select a Transaction Type"
+            />
+            <label for="float-label">Transaction</label>
+          </p-floatLabel>
+        </div>
+
+        <!-- Spacer to push save button -->
+        <div class="col-md-2">
+          <div class="mb-2 d-flex align-items-center gap-2">
+            <p-floatlabel variant="on">
+              <p-datepicker
+                value="selectedDateString"
+                inputId="on_label"
+                showIcon
+                iconDisplay="input"
+                (onSelect)="onDateChange($event)"
+                dateFormat="dd.mm.yy"
+                [(ngModel)]="date"
+                [ngModelOptions]="{ standalone: true }"
+              />
+              <label for="on_label">Sales Date</label>
+            </p-floatlabel>
+          </div>
+        </div>
+
+        <div
+          class="col-md-8 d-flex align-items-center gap-2 justify-content-end"
+        >
+          <!-- Adjusted width -->
+        </div>
+      </div>
+      <div class="row">
+        <!-- Sales Specific Fields (Type 1) -->
+        <ng-container
+          *ngIf="salesForm.get('transactionTypeId')?.value.value == '1'"
+        >
+          <div class="col-md-2">
+            <!-- Adjusted width -->
+            <label for="userId" class="form-label form-label-custom"
+              >Select Customer</label
+            >
+            <div class="form-group">
+              <p-select
+                [options]="users"
+                formControlName="userId"
+                optionValue="userClientRoleId"
+                optionLabel="userName"
+                [filter]="true"
+                filterBy="userName"
+                placeholder="Select Customer"
+                [class.ng-invalid]="isControlInvalid('userId')"
+                [class.ng-dirty]="isControlInvalid('userId')"
+                [style]="{ width: '100%' }"
+                [class.is-invalid]="isControlInvalid('userId')"
+              >
+              </p-select>
+              <div *ngIf="isControlInvalid('userId')" class="invalid-feedback">
+                User is required.
+              </div>
+            </div>
+          </div>
+          <div class="col-md-1">
+            <!-- Adjusted width -->
+            <label for="billNumber" class="form-label form-label-custom"
+              >Bill No</label
+            >
+
+            <input
+              type="text"
+              id="billNumber"
+              class="form-control"
+              formControlName="billNumber"
+              placeholder="Bill Number"
+            />
+          </div>
+          <div class="col-md-1">
+            <label for="cages" class="form-label form-label-custom"
+              >Cages</label
+            >
+            <input
+              type="number"
+              id="cages"
+              class="form-control"
+              formControlName="cages"
+              placeholder="Cages"
+              [class.is-invalid]="isControlInvalid('cages')"
+            />
+            <div *ngIf="isControlInvalid('cages')" class="invalid-feedback">
+              Cages required.
+            </div>
+          </div>
+          <div class="col-md-1">
+            <label for="rate" class="form-label form-label-custom">Rate</label>
+            <input
+              type="number"
+              id="rate"
+              class="form-control"
+              formControlName="rate"
+              placeholder="Rate"
+              [class.is-invalid]="isControlInvalid('rate')"
+            />
+            <div *ngIf="isControlInvalid('rate')" class="invalid-feedback">
+              Rate required.
+            </div>
+          </div>
+          <div class="col-md-1">
+            <label for="fullCage" class="form-label form-label-custom"
+              >Full</label
+            >
+            <input
+              type="number"
+              id="fullCage"
+              class="form-control"
+              formControlName="fullCage"
+              placeholder="Full Cage"
+              [class.is-invalid]="isControlInvalid('fullCage')"
+            />
+            <div *ngIf="isControlInvalid('fullCage')" class="invalid-feedback">
+              full required.
+            </div>
+          </div>
+          <div class="col-md-1">
+            <label for="emptyCage" class="form-label form-label-custom"
+              >Empty</label
+            >
+            <input
+              type="number"
+              id="emptyCage"
+              class="form-control"
+              formControlName="emptyCage"
+              placeholder="Empty Cage"
+            />
+          </div>
+          <div class="col-md-1">
+            <label for="weight" class="form-label form-label-custom"
+              >Weight</label
+            >
+            <input
+              type="number"
+              id="weight"
+              class="form-control"
+              formControlName="weight"
+              placeholder="Weight"
+              [class.is-invalid]="isControlInvalid('weight')"
+              [readOnly]="true"
+            />
+            <div *ngIf="isControlInvalid('weight')" class="invalid-feedback">
+              Weight required.
+            </div>
+          </div>
+          <div class="col-md-1">
+            <!-- Dressing Amount for Sales -->
+            <label for="dressingAmount" class="form-label form-label-custom"
+              >Dressing</label
+            >
+            <input
+              type="number"
+              id="dressingAmount"
+              class="form-control"
+              formControlName="dressingAmount"
+              placeholder="Dressing"
+            />
+          </div>
+          <div class="col-md-1">
+            <label for="amount" class="form-label form-label-custom"
+              >Amount</label
+            >
+            <input
+              type="number"
+              id="amount"
+              class="form-control"
+              formControlName="amount"
+              placeholder="Amount"
+              [class.is-invalid]="isControlInvalid('amount')"
+              [readOnly]="true"
+            />
+            <div *ngIf="isControlInvalid('amount')" class="invalid-feedback">
+              Amount required.
+            </div>
+            </div>
+
+            <div class="col-md-1">
+              <label for="button" class="form-label form-label-custom"> </label>
+              <button size id="button" type="submit" class="form-control btn-primary mt-2">
+                {{ isSaving ? "Saving..." : "Save" }}
+              </button>
+            </div>
+
+          <!-- Amount Paid & Discount hidden for Sales type -->
+        </ng-container>
+      </div>
+      <div class="row">
+        <!-- Payment Specific Fields (Type 2) -->
+        <ng-container
+          *ngIf="salesForm.get('transactionTypeId')?.value.value == '2'"
+        >
+          <div class="col-md-2">
+            <!-- Adjusted width -->
+            <label for="userId" class="form-label form-label-custom"
+              >Select Customer</label
+            >
+            <div class="form-group">
+              <p-select
+                [options]="users"
+                formControlName="userId"
+                optionValue="userClientRoleId"
+                optionLabel="userName"
+                [filter]="true"
+                filterBy="userName"
+                placeholder="Select Customer"
+                [class.ng-invalid]="isControlInvalid('userId')"
+                [class.ng-dirty]="isControlInvalid('userId')"
+                [style]="{ width: '100%' }"
+                [class.is-invalid]="isControlInvalid('userId')"
+              >
+              </p-select>
+              <div *ngIf="isControlInvalid('userId')" class="invalid-feedback">
+                User is required.
+              </div>
+            </div>
+          </div>
+          <div class="col-md-2">
+            <!-- Adjusted width -->
+            <label for="billNumber" class="form-label form-label-custom"
+              >Bill No</label
+            >
+            <input
+              type="text"
+              id="billNumber"
+              class="form-control"
+              formControlName="billNumber"
+              placeholder="Bill Number"
+            />
+          </div>
+          <div class="col-md-2">
+            <!-- Amount Paid for Payment -->
+            <label for="amountPaid" class="form-label form-label-custom"
+              >Amount</label
+            >
+            <input
+              type="number"
+              id="amountPaid"
+              class="form-control"
+              formControlName="amountPaid"
+              placeholder="Amount Paid"
+              [class.is-invalid]="isControlInvalid('amountPaid')"
+            />
+            <div
+              *ngIf="isControlInvalid('amountPaid')"
+              class="invalid-feedback"
+            >
+              Amount Paid required.
+            </div>
+          </div>
+          <div class="col-md-2">
+            <!-- Discount Amount for Payment -->
+            <label for="discountAmt" class="form-label form-label-custom"
+              >Discount</label
+            >
+            <input
+              type="number"
+              id="discountAmt"
+              class="form-control"
+              formControlName="discountAmt"
+              placeholder="Discount Amt"
+            />
+          </div>
+          <div class="col-md-2">
+            <!-- Comments for Payment -->
+            <label for="comments" class="form-label form-label-custom"
+              >Comments</label
+            >
+
+            <input
+              type="text"
+              id="comments"
+              class="form-control"
+              formControlName="comments"
+              placeholder="Optional Comments"
+            />
+          </div>
+          <div class="col-md-1">
+            <label for="button" class="form-label form-label-custom"> </label>
+            <button size id="button" type="submit" class="form-control btn-primary mt-2">
+              {{ isSaving ? "Saving..." : "Save" }}
+            </button>
+          </div>
+
+          <!-- Sales specific fields hidden for Payment type -->
+        </ng-container>
+      </div>
+    </form>
+  </div>
+
+  <!-- Existing Grid Section (No change needed here) -->
+  <div class="row">
+    <!-- ... rest of the grid html ... -->
+    <div class="column col-lg-12">
+      <!-- Add search field -->
+      <div class="d-flex justify-content-between align-items-center mb-3">
+        <!-- Left: Title -->
+        <div class="mb-3 d-flex align-items-center gap-2"></div>
+
+        <!-- Right: Search + Excel Icon -->
+        <div class="d-flex align-items-center gap-2">
+          <div class="form-check me-2">
+            <input class="form-check-input" type="checkbox" [(ngModel)]="showDuplicatesOnly" (change)="onDuplicateFilterChange($event)" id="duplicateFilter">
+            <label class="form-check-label" for="duplicateFilter">
+              <i
+              class=" ri-file-copy-2-fill text-warning "
+              style="cursor: pointer"
+              title="Duplicate Entries Only"
+            >
+            </i>
+            </label>
+          </div>
+          <div class="form-check me-2">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              id="showHighlightedOnly"
+              [(ngModel)]="showHighlightedOnly"
+              (change)="onHighlightedFilterChange($event)"
+            >
+            <label class="form-check-label" for="showHighlightedOnly">
+              <i
+              class=" ri-user-unfollow-fill  text-danger"
+              style="cursor: pointer"
+              title="Highlighted Entries Only"
+            >
+            </i>
+            </label>
+          </div>
+          <input
+            type="text"
+            class="form-control"
+            placeholder="Search..."
+            (keyup)="onFilterTextBoxChanged($event)"
+            style="width: 300px"
+          />
+          <i
+            class="bi bi-file-earmark-excel fs-4 text-success"
+            style="cursor: pointer"
+            (click)="exportToExcel()"
+            title="Export to Excel"
+          >
+          </i>
+          <i
+            class="bi bi-whatsapp fs-4 text-success"
+            style="cursor: pointer"
+            (click)="sendWhatsAppMessages()"
+            title="Send WhatsApp Messages"
+          >
+          </i>
+        </div>
+      </div>
+    </div>
+    <div class="column col-lg-12">
+      <div class="ag-grid-wrapper" *ngIf="rowData && rowData.length > 0">
+        <!-- Added check for rowData existence -->
+        <ag-grid-angular
+        style="width: 100%; height: calc(100vh - 200px)"
+        class="ag-theme-alpine"
+          [rowData]="rowData"
+          [columnDefs]="colDefs"
+          [domLayout]="'normal'"
+          [suppressHorizontalScroll]="false"
+          [defaultColDef]="defaultColDef"
+          [gridOptions]="gridOptions"
+          [pagination]="true"
+          [paginationPageSize]="100"
+          [suppressPaginationPanel]="false"
+          [quickFilterText]="searchText"
+          (gridReady)="onGridReady($event)"
+          [stopEditingWhenCellsLoseFocus]="true"
+        >
+        </ag-grid-angular>
+      </div>
+      <!-- Updated Loading/No Data Message -->
+      <div
+        *ngIf="isLoading && (!rowData || rowData.length === 0)"
+        class="text-center p-4"
+      >
+        Loading...
+      </div>
+      <div
+        *ngIf="!isLoading && (!rowData || rowData.length === 0)"
+        class="text-center p-4"
+      >
+        No sales or payment data found for the selected date.
+      </div>
+    </div>
+  </div>
+</section>

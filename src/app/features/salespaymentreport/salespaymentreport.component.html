@@ -1,0 +1,169 @@
+<div class="pagetitle">
+    <h1>Reports</h1>
+    <nav>
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+          <a (click)="goto('/dashboard')" class="handPointer">Home</a>
+        </li>
+        <li class="breadcrumb-item active">Sales Payment Report</li>
+      </ol>
+    </nav>
+  </div>
+  <!-- End Page Title -->
+  <section class="section">
+    <div class="row">
+      <div class="col-lg-12">
+        <form [formGroup]="salespaymentreportForm" (ngSubmit)="onSubmit()" class="report-form">
+          <div class="col-lg-12">
+            <div class="report-form">
+              <div class="form-group">
+                 <p-floatlabel variant="on">
+              <p-datepicker
+              [class.is-invalid]="f['startDate'].touched && f['startDate'].invalid"
+                formControlName="startDate" 
+                inputId="startDate"
+                showIcon
+                iconDisplay="input"
+                dateFormat="dd.mm.yy"
+              />
+              <label for="startDate">Sales Start Date</label>
+            </p-floatlabel>
+               
+                <div *ngIf="f['startDate'].touched && f['startDate'].invalid" class="invalid-feedback">
+                  <div *ngIf="f['startDate'].errors?.['required']">Start date is required</div>
+                </div>
+              </div>
+              &nbsp;&nbsp;
+
+              <div class="form-group">
+                <p-floatlabel variant="on">
+              <p-datepicker
+              [class.is-invalid]="(f['endDate'].touched && f['endDate'].invalid) || salespaymentreportForm.errors?.['dateRange']"
+                inputId="endDate"
+                formControlName="endDate" 
+                showIcon
+                iconDisplay="input"
+                dateFormat="dd.mm.yy"
+              />
+              <label for="endDate">Sales End Date</label>
+            </p-floatlabel>
+                <div *ngIf="f['endDate'].touched && f['endDate'].invalid" class="invalid-feedback">
+                  <div *ngIf="f['endDate'].errors?.['required']">End date is required</div>
+                </div>
+                <div *ngIf="salespaymentreportForm.errors?.['dateRange']" class="invalid-feedback">
+                  End date cannot be before start date
+                </div>
+              </div>
+              &nbsp;&nbsp;
+
+              <div class="form-group">
+                <p-floatLabel variant="on">
+                  <p-select
+                    [options]="users"
+                    formControlName="userId"
+                    optionValue="userId"
+                    optionLabel="userName"
+                    [filter]="true"
+                    filterBy="userName"
+                    placeholder="Select Customer"
+                    [style]="{ width: '100%' }"
+                  ></p-select>
+                  <label for="userId">Select Customer</label>
+                </p-floatLabel>
+              </div>
+              &nbsp;&nbsp;
+
+              <div class="form-group">
+                <button type="submit" class="btn btn-primary form-control">Generate Report</button>
+              </div>
+            </div>
+          </div>
+        </form>
+
+        <!-- Summary Table -->
+        <div *ngIf="salesPaymentReportData" class="mt-4">
+          <div>
+            <div>
+              <h5>Summary</h5>
+              <div class="table-responsive">
+                <table class="table table-bordered">
+                  <thead>
+                    <tr class="table-dark" *ngIf="f['userId'].value">
+                      <th>Amount Paid</th>
+                      <th>Dressing Amount</th>
+                      
+                    </tr>
+                    <tr class="table-dark" *ngIf="!f['userId'].value">
+                      <th>Amount Paid</th>
+                      <th>Discount</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngIf="f['userId'].value">
+                      <td>{{ amountPaid_count | number:'1.2-2' }}</td>
+                      <td>{{ discount_count | number:'1.2-2' }}</td>
+                    </tr>
+                    <tr *ngIf="!f['userId'].value">
+                      <td>{{ amountPaid_count | number:'1.2-2' }}</td>
+                      <td>{{ discount_count | number:'1.2-2' }}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Transactions Table -->
+        <div *ngIf="salesPaymentReportData && salesPaymentReportData.length > 0" class="mt-4">
+          <div>
+            <div *ngIf="salesPaymentReportData[0]?.transactions && salesPaymentReportData[0].transactions.length > 0">
+              <div class="d-flex justify-content-between align-items-center mb-3">
+                <!-- Left: Title -->
+                <h5 class="mb-0">Sales Payment Transactions</h5>
+              
+                <!-- Right: Search + Excel Icon -->
+                <div class="d-flex align-items-center gap-2">
+                  <input
+                    type="text"
+                    class="form-control"
+                    placeholder="Search..."
+                    (keyup)="onFilterTextBoxChanged($event)"
+                    style="width: 300px;"
+                  >
+                  <i 
+                    class="bi bi-file-earmark-excel fs-4 text-success"
+                    style="cursor: pointer;"
+                    (click)="exportToExcel()"
+                    title="Export to Excel">
+                  </i>
+                </div>
+              </div>
+              <div class="table-responsive">
+                <div class="ag-grid-wrapper">
+                  <ag-grid-angular
+                  style="width: 100%; height: calc(100vh - 200px);padding-bottom: 40px;"
+                  class="ag-theme-alpine"
+                      [rowData]="rowData"
+                      [columnDefs]="colDefs"
+                      [domLayout]="'normal'"
+                      [suppressHorizontalScroll]="false"
+                      [defaultColDef]="{
+                        flex: 1,
+                        minWidth: 100,
+                        resizable: true
+                      }"
+                      [pagination]="true"
+                      [paginationPageSize]="20"
+                      [quickFilterText]="searchText"
+                      (gridReady)="onGridReady($event)"
+                    >
+                    </ag-grid-angular>
+                    </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>

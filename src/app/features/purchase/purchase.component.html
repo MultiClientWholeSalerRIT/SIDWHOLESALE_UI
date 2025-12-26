@@ -1,0 +1,209 @@
+<!-- START OF FILE purchase.component.html -->
+
+<p-confirmDialog [style]="{width: '450px'}"></p-confirmDialog>
+
+<div class="pagetitle">
+    <h1>Purchase</h1> <!-- Updated Title -->
+    <nav>
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+          <a (click)="goto('/dashboard')" class="handPointer">Home</a>
+        </li>
+        <li class="breadcrumb-item active">Purchase</li>
+      </ol>
+    </nav>
+  </div>
+  <!-- End Page Title -->
+  
+  
+  <section class="section">
+    <div class="row">
+      <!-- Add purchase/Payment Form -->
+      <form [formGroup]="purchaseForm" (ngSubmit)="onSubmit()" class="p-3 mb-4">
+        <div class="row g-3">
+
+          <div class="col-md-2 " >
+            <label for="purchaseDate" class="form-label">Purchase Date</label>
+            
+              <p-datepicker
+              
+                value="selectedDateString"
+                inputId="purchaseDate"
+                showIcon
+                iconDisplay="input"
+                (onSelect)="onDateChange($event)"
+                dateFormat="dd.mm.yy"
+                [(ngModel)]="date"
+                [maxDate]="todaydateForDatePicker"
+                [ngModelOptions]="{ standalone: true }"
+              />
+           </div>
+  
+          <!-- Common Fields -->
+          <div class="col-md-2"> <!-- Adjusted width -->
+            <label for="transactionTypeId" class="form-label">Transaction Type</label>
+            <select class="form-control" id="transactionTypeId" formControlName="transactionTypeId" [class.is-invalid]="isControlInvalid('transactionTypeId')">
+              <option value="" disabled>Select Type</option>
+              <option value="3" selected>Purchase</option>
+              <option value="4">Purchase Payment</option>
+            </select>
+             <div *ngIf="isControlInvalid('transactionTypeId')" class="invalid-feedback">
+                Type is required.
+              </div>
+          </div>
+          
+          
+           <!-- Spacer to push save button -->
+   
+          
+          <!-- <div class="col-md-8 d-flex align-items-center gap-2 justify-content-end"> 
+            
+              
+          </div> -->
+  
+          <!-- purchase Specific Fields (Type 1) -->
+          <ng-container *ngIf="purchaseForm.get('transactionTypeId')?.value == '3'">
+            <div class="col-md-2"> <!-- Adjusted width -->
+              <label for="userId" class="form-label">Select Customer</label>
+              <div class="form-group">
+                <p-select
+                [options]="users"
+                formControlName="userId"
+                optionValue="userClientRoleId"
+                optionLabel="userName"
+                [filter]="true"
+                filterBy="userName"
+                placeholder="Select Customer"
+                [class.ng-invalid]="isControlInvalid('userId')"
+                [class.ng-dirty]="isControlInvalid('userId')"
+                [style]="{ width: '100%' }"
+                [class.is-invalid]="isControlInvalid('userId')"
+              >
+              </p-select>
+                <div *ngIf="isControlInvalid('userId')" class="invalid-feedback">
+                  User is required.
+                </div>
+              </div>
+            </div>
+            
+            <div class="col-md-1">
+              <label for="rate" class="form-label">Rate</label>
+              <input type="number" id="rate" class="form-control" formControlName="rate" placeholder="Rate" [class.is-invalid]="isControlInvalid('rate')">
+              <div *ngIf="isControlInvalid('rate')" class="invalid-feedback">
+                  Rate required.
+              </div>
+            </div>
+            <div class="col-md-1">
+              <label for="weight" class="form-label">Weight</label>
+              <input type="number" id="weight" class="form-control" formControlName="weight" placeholder="Weight" [class.is-invalid]="isControlInvalid('weight')">
+              <div *ngIf="isControlInvalid('weight')" class="invalid-feedback">
+                  Weight required.
+              </div>
+            </div>
+            <div class="col-md-1">
+              <label for="amount" class="form-label">Amount</label>
+              <input type="number" id="amount" class="form-control" formControlName="amount" placeholder="Amount" [class.is-invalid]="isControlInvalid('amount')" [readOnly]="true">
+              <div *ngIf="isControlInvalid('amount')" class="invalid-feedback">
+                  Amount required.
+              </div>
+            </div>
+             
+            <!-- Amount Paid & Discount hidden for purchase type -->
+          </ng-container>
+  
+          <!-- Payment Specific Fields (Type 2) -->
+          <ng-container *ngIf="purchaseForm.get('transactionTypeId')?.value == '4'">
+            <div class="col-md-2"> <!-- Adjusted width -->
+              <label for="userId" class="form-label">Select Customer</label>
+              <div class="form-group">
+                <select formControlName="userId" id="userId" class="form-control" [class.is-invalid]="isControlInvalid('userId')">
+                  <option value="" selected disabled>Select Customer</option>
+                  <option *ngFor="let user of users" [value]="user.userClientRoleId">{{ user.userName }}</option>
+                  <!-- <option value="1">Temp User 1</option>
+                  <option value="2">Temp User 2</option> -->
+                </select>
+                <div *ngIf="isControlInvalid('userId')" class="invalid-feedback">
+                  User is required.
+                </div>
+              </div>
+            </div>
+             <div class="col-md-1"> <!-- Amount Paid for Payment -->
+              <label for="amountPaid" class="form-label">Amount</label>
+              <input type="number" id="amountPaid" class="form-control" formControlName="amountPaid" placeholder="Amount Paid" [class.is-invalid]="isControlInvalid('amountPaid')">
+                <div *ngIf="isControlInvalid('amountPaid')" class="invalid-feedback">
+                  Amount Paid required.
+                </div>
+            </div>
+            <div class="col-md-1"> <!-- Discount Amount for Payment -->
+              <label for="discountAmt" class="form-label">Discount</label>
+              <input type="number" id="discountAmt" class="form-control" formControlName="discountAmt" placeholder="Discount Amt">
+            </div>
+            <div class="col-md-2"> <!-- Comments for Payment -->
+                <label for="comments" class="form-label">Comments</label>
+                <input type="text" id="comments" class="form-control" formControlName="comments" placeholder="Optional Comments">
+            </div>
+             <!-- purchase specific fields hidden for Payment type -->
+          </ng-container>
+          <div class="col-md-1">
+            <label for="button" class="form-label form-label-custom"> </label>
+            <button size id="button" type="submit" class="form-control btn-primary mt-2">
+              {{ isSaving ? "Saving..." : "Save" }}
+            </button>
+          </div>
+  
+        </div>
+      </form>
+    </div>
+  
+    <!-- Existing Grid Section (No change needed here) -->
+    <div class="row">
+       <!-- ... rest of the grid html ... -->
+      <div class="column col-lg-12">
+        <!-- Add search field -->
+        <div class="d-flex justify-content-between align-items-center mb-3">
+          <!-- Left: Title -->
+          <div class="mb-3 d-flex align-items-center gap-2">
+            
+          </div>
+  
+          <!-- Right: Search + Excel Icon -->
+          <div class="d-flex align-items-center gap-2">
+            <input
+              type="text"
+              class="form-control"
+              placeholder="Search..."
+              (keyup)="onFilterTextBoxChanged($event)"
+              style="width: 300px;"
+            >
+            <i
+              class="bi bi-file-earmark-excel fs-4 text-success"
+              style="cursor: pointer;"
+              (click)="exportToExcel()"
+              title="Export to Excel">
+            </i>
+          </div>
+        </div>
+      </div>
+      <div class="column col-lg-12">
+        <div class="ag-grid-wrapper"  *ngIf="rowData && rowData.length > 0"> <!-- Added check for rowData existence -->
+          <ag-grid-angular
+          style="width: 100%; height: calc(100vh - 200px)"
+            class="ag-theme-alpine"
+            [rowData]="rowData"
+            [columnDefs]="colDefs"
+            [domLayout]="'normal'"
+            [suppressHorizontalScroll]="false"
+            [defaultColDef]="defaultColDef"
+            [pagination]="true"
+            [paginationPageSize]="20"
+            [quickFilterText]="searchText"
+            (gridReady)="onGridReady($event)"
+          >
+          </ag-grid-angular>
+        </div>
+         <!-- Updated Loading/No Data Message -->
+        <div *ngIf="isLoading && (!rowData || rowData.length === 0)" class="text-center p-4">Loading...</div>
+        <div *ngIf="!isLoading && (!rowData || rowData.length === 0)" class="text-center p-4">No purchase or payment data found for the selected date.</div>
+      </div>
+    </div>
+  </section>

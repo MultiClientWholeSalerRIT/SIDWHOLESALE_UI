@@ -1,0 +1,116 @@
+<div class="pagetitle">
+  <h1>Reports</h1>
+  <nav>
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item">
+        <a (click)="goto('/dashboard')" class="handPointer">Home</a>
+      </li>
+      <li class="breadcrumb-item active">SMS Report</li>
+    </ol>
+  </nav>
+</div>
+
+<section class="section">
+  <div class="row">
+    <div class="col-lg-12">
+      <form [formGroup]="reportForm" (ngSubmit)="onSubmit()" class="">
+        <div class="col-lg-12">
+          <div class="report-form">
+            <div class="form-group  col-sm-2">
+               <p-floatlabel variant="on">
+              <p-datepicker
+              [class.is-invalid]="f['startDate'].touched && f['startDate'].invalid"
+                formControlName="startDate" 
+                inputId="startDate"
+                showIcon
+                iconDisplay="input"
+                dateFormat="dd.mm.yy"
+              />
+              <label for="startDate">Sales Start Date</label>
+            </p-floatlabel>
+                           <div *ngIf="f['startDate'].touched && f['startDate'].invalid" class="invalid-feedback">
+                <div *ngIf="f['startDate'].errors?.['required']">Start Date is required</div>
+              </div>
+            </div>
+
+            <div class="form-group  col-sm-2">
+              <p-floatlabel variant="on">
+              <p-datepicker
+              [class.is-invalid]="(f['endDate'].touched && f['endDate'].invalid) || reportForm.errors?.['dateRange']"
+                inputId="endDate"
+                formControlName="endDate" 
+                showIcon
+                iconDisplay="input"
+                dateFormat="dd.mm.yy"
+              />
+              <label for="endDate">Sales End Date</label>
+            </p-floatlabel>
+              <div *ngIf="f['endDate'].touched && f['endDate'].invalid" class="invalid-feedback">
+                <div *ngIf="f['endDate'].errors?.['required']">End Date is required</div>
+                <div *ngIf="f['endDate'].errors?.['endBeforeStart']">End date cannot be before start date</div>
+              </div>
+            </div>
+
+            <div class="form-group col-sm-2">
+              <button type="submit" class="btn btn-primary">Generate Report</button>
+            </div>
+            <div class="form-group col-sm-6"></div>
+          </div>
+        </div>
+      </form>
+
+  
+        <div class="col-lg-12">
+          <div *ngIf="error" class="alert alert-info">
+            {{ error }}
+          </div>
+          <div *ngIf="smsReportData?.length > 0">
+
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              <!-- Left: Title -->
+              <h5 class="mb-0">SMS Report</h5>
+            
+              <!-- Right: Search + Excel Icon -->
+              <div class="d-flex align-items-center gap-2">
+                <input
+                  type="text"
+                  class="form-control"
+                  placeholder="Search..."
+                  (keyup)="onFilterTextBoxChanged($event)"
+                  style="width: 300px;"
+                >
+                <i 
+                  class="bi bi-file-earmark-excel fs-4 text-success"
+                  style="cursor: pointer;"
+                  (click)="exportToExcel()"
+                  title="Export to Excel">
+                </i>
+              </div>
+            </div>
+            <div>          
+              <div class="ag-grid-wrapper">
+              <ag-grid-angular
+              style="width: 100%; height: calc(100vh - 200px)"
+              class="ag-theme-alpine"
+                  [rowData]="rowData"
+                  [columnDefs]="colDefs"
+                  [domLayout]="'normal'"
+                  [suppressHorizontalScroll]="false"
+                  [defaultColDef]="{
+                    flex: 1,
+                    minWidth: 100,
+                    resizable: true
+                  }"
+                  [pagination]="true"
+                  [paginationPageSize]="20"
+                  [quickFilterText]="searchText"
+                  (gridReady)="onGridReady($event)"
+                >
+                </ag-grid-angular>
+                </div>
+            </div>
+          </div>
+        </div>
+    </div>
+  </div>
+</section>

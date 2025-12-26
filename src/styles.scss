@@ -1,0 +1,116 @@
+/* You can add global styles to this file, and also import other style files */
+
+/* Importing Bootstrap SCSS file. */
+@import 'bootstrap/scss/bootstrap';
+body {
+    background: linear-gradient(70deg, #e6e6e6, #f7f7f7);
+    color: #514B64;
+    min-height: 100vh;
+  }
+  
+  html, body, app-root,app-sales {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+  }
+
+  
+  body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+  .footer {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    padding: 15px 0;
+    background-color: #f8f9fa;
+    border-top: 1px solid #dee2e6;
+  }
+  
+  /* Adjust main content to prevent footer overlap */
+  .section {
+    margin-bottom: 60px; /* Height of footer */
+  }
+
+// Toast Styles
+.ngb-toasts {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  margin: 0.5em;
+  z-index: 1200;
+  max-width: calc(100% - 24px); // Slightly reduced margin
+}
+
+.toast {
+  background: white;
+  border: none !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  border-radius: 6px !important;
+  overflow: hidden;
+  margin-bottom: 0.75rem;
+  width: 280px; // Decreased from 350px
+  max-width: 100%;
+  padding: 0.875rem !important;
+  font-size: 0.875rem;
+  backdrop-filter: blur(10px);
+  display: flex;
+  align-items: center;
+
+  .ngb-toast-content {
+    display: flex;
+    align-items: center;
+    width: 100%;
+  }
+  
+  &.toast-success {
+    border-left: 3px solid #51A351 !important;
+    background: rgba(255, 255, 255, 0.95) !important;
+    color: #2c662c !important;
+
+    &::before {
+      content: '✓';
+      margin-right: 8px;
+      color: #51A351;
+      font-weight: bold;
+      line-height: 1;
+      display: inline-block;
+      vertical-align: middle;
+    }
+  }
+  
+  &.toast-warning {
+    border-left: 3px solid #f89406 !important;
+    background: rgba(255, 255, 255, 0.95) !important;
+    color: #8f5600 !important;
+
+    &::before {
+      content: '!';
+      margin-right: 8px;
+      color: #f89406;
+      font-weight: bold;
+      line-height: 1;
+      display: inline-block;
+      vertical-align: middle;
+    }
+  }
+  
+  &.toast-error {
+    border-left: 3px solid #bd362f !important;
+    background: rgba(255, 255, 255, 0.95) !important;
+    color: #7a1f1c !important;
+
+    &::before {
+      content: '×';
+      margin-right: 8px;
+      color: #bd362f;
+      font-weight: bold;
+      line-height: 1;
+      display: inline-block;
+      vertical-align: middle;
+    }
+  }
+  
+  // Ensure text wraps properly on small screens
+  white-space: normal;
+  word-wrap: break-word;
+}

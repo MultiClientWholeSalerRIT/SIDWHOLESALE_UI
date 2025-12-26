@@ -1,0 +1,107 @@
+<aside id="sidebar" class="sidebar">
+
+    <ul class="sidebar-nav" id="sidebar-nav">
+
+      <!-- Dashboard - visible to all -->
+      <li class="nav-item">
+        <a class="nav-link " [routerLink]='["/dashboard"]' [class.active]="checkRouterLinkActive('dashboard')">
+          <i class="bi bi-grid"></i>
+          <span>Dashboard</span>
+        </a>
+      </li><!-- End Dashboard Nav -->
+
+      <!-- Sales - Admin & Manager only -->
+      <li class="nav-item">
+        <a class="nav-link" [routerLink]="['/sales']" [class.active]="checkRouterLinkActive('sales')">
+          <i class="bi bi-menu-button-wide"></i>
+          <span>Sales</span>
+        </a>
+      </li><!-- End Components Nav -->
+
+      <!-- Purchases - Admin & Manager only -->
+      <li class="nav-item" *ngIf="isAdmin()">
+        <a  class="nav-link" [routerLink]="['/purchase']" [class.active]="checkRouterLinkActive('purchase')">
+          <i class="bi bi-bag-dash"></i>
+          <span>Purchases</span>
+        </a>
+      </li>
+        
+      <!-- End Forms Nav -->
+
+      <!-- User Management - Admin only -->
+      <li class="nav-item" >
+        <a class="nav-link collapsed" data-bs-target="#forms-nav" data-bs-toggle="collapse" href="#">
+          <i class="bi bi-journal-text"></i><span>Users Management</span><i class="bi bi-chevron-down ms-auto"></i>
+        </a>
+        <ul id="forms-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+          <li *ngIf="isAdmin()">
+            <a [routerLink]="['/usermgmt']" routerLinkActive="active" class="nav-link">
+              <i class="bi bi-circle"></i><span>Manage Customer/Vendor</span>
+            </a>
+          </li>
+          <li *ngIf="isAdmin()">
+            <a [routerLink]="['/loginusermgmt']" routerLinkActive="active" class="nav-link">
+              <i class="bi bi-circle"></i><span>Manage Users</span>
+            </a>
+          </li>
+          <li>
+            <a [routerLink]="['/liverate']" routerLinkActive="active" class="nav-link">
+              <i class="bi bi-circle"></i><span>Manage Live Rate</span>
+            </a>
+          </li>
+          <li>
+            <a [routerLink]="['/salesapproval']" routerLinkActive="active" class="nav-link">
+              <i class="bi bi-circle"></i><span>Manage Sales</span>
+            </a>
+          </li>
+        </ul>
+      </li><!-- End Forms Nav -->
+
+      <!-- Reports - Admin & Manager only -->
+      <li class="nav-item" *ngIf="isEditOrAdmin()">
+        <a class="nav-link collapsed" data-bs-target="#tables-nav" data-bs-toggle="collapse" href="#">
+          <i class="bi bi-layout-text-window-reverse"></i><span>Reports</span><i class="bi bi-chevron-down ms-auto"></i>
+        </a>
+        <ul id="tables-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+          <li>
+            <a class="nav-link" [routerLink]='["/salesreport"]' routerLinkActive="active">
+              <i class="bi bi-circle"></i><span>Sales Report</span>
+            </a>
+          </li>
+          <li>
+            <a [routerLink]="['/salespaymentreport']" routerLinkActive="active" class="nav-link">
+              <i class="bi bi-circle"></i><span>Sales Payment Report</span>
+            </a>
+          </li>
+          <li *ngIf="isAdmin()">
+            <a class="nav-link" [routerLink]='["/purchasereport"]' routerLinkActive="active">
+              <i class="bi bi-circle"></i><span>Purchase Report</span>
+            </a>
+          </li>
+          <li *ngIf="isAdmin()">
+            <a class="nav-link" [routerLink]='["/purchasepaymentreport"]' routerLinkActive="active">
+              <i class="bi bi-circle"></i><span>Purchase Payment Report</span>
+            </a>
+          </li>
+          <li>
+            <a class="nav-link" [routerLink]='["/customer"]' routerLinkActive="active">
+              <i class="bi bi-circle"></i><span>Customer Report</span>
+            </a>
+          </li>
+          <li *ngIf="isAdmin()">
+            <a class="nav-link" [routerLink]='["/vendor"]' routerLinkActive="active">
+              <i class="bi bi-circle"></i><span>Vendor Report</span>
+            </a>
+          </li>
+          <!-- SMS Report - Admin only -->
+          <li >
+            <a class="nav-link" [routerLink]='["/smsreport"]' routerLinkActive="active">
+              <i class="bi bi-circle"></i><span>SMS Report</span>
+            </a>
+          </li>
+        </ul>
+      </li><!-- End Tables Nav -->
+
+    </ul>
+
+  </aside>
